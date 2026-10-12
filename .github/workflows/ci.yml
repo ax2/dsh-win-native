@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# The plugin targets Windows correctness, but the tools are pure JS/TS: the
+# read-only filesystem tools and the text analysers must behave identically on
+# POSIX, especially the refusal to resolve relative paths. Building and testing
+# on Ubuntu proves the plugin does not quietly depend on Windows-only behaviour,
+# and the Node 22/24 matrix proves it does not depend on one Node release.
+jobs:
+  test:
+    name: node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: node --test test/
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check the built entry point loads
+        run: node -e "import('./lib/index.js').then((m) => { if (typeof m.apply !== 'function') { throw new Error('apply is not exported') } if (!Array.isArray(m.inject)) { throw new Error('inject is not exported') } console.log('ok', m.name, m.inject) })"

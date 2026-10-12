@@ -1,0 +1,6 @@
+# Bundle layer contributed by dsh-win-native.
+# Installing the package appends this bundle to a profile's dsh.profile.bundles;
+# the row below mounts the plugin's `apply` (package root main).
+- insert:
+    - id: win-native
+      name: dsh-win-native
