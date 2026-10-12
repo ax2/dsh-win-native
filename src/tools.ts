@@ -124,11 +124,36 @@ export function defineReceiptTool(body: ToolBody, opts: ToolFactoryOptions) {
     // below, so only the erased generic is dropped here.
     async execute(args: unknown, exec: { signal: AbortSignal }) {
       exec.signal.throwIfAborted()
-      return await body.run(args as Record<string, unknown>, limits, exec)
+      return guardOutputSize(await body.run(args as Record<string, unknown>, limits, exec), limits)
     },
   }
   const compile = defineTool as unknown as (input: unknown) => ToolDefinition
   return compile(options)
+}
+
+/**
+ * Flag a canonical payload larger than the configured output budget.
+ *
+ * Text payloads are clipped inside their own tool; a structured or encoded
+ * payload cannot be partially clipped without becoming a different value, so it
+ * is returned whole and marked instead of being silently mangled.
+ * @param value - envelope produced by a tool body.
+ * @param limits - effective budgets.
+ */
+function guardOutputSize(value: Envelope<unknown>, limits: Limits): Envelope<unknown> {
+  const size = utf8Bytes(JSON.stringify(value.result ?? null) ?? '')
+  if (size <= limits.maxOutputBytes) return value
+  return {
+    result: value.result,
+    meta: {
+      ...value.meta,
+      truncated: true,
+      notes: [
+        ...value.meta.notes,
+        `result payload is ${size} bytes, above maxOutputBytes=${limits.maxOutputBytes}; it was returned whole because a canonical value cannot be partially clipped`,
+      ],
+    },
+  }
 }
 
 /** Compile a parameter schema to JSON Schema, proving the DSL node is valid. */
