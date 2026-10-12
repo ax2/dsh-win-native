@@ -6,6 +6,34 @@
 
 ---
 
+## 快速开始
+
+[![npm](https://img.shields.io/npm/v/dsh-win-native)](https://www.npmjs.com/package/dsh-win-native)
+![tools](https://img.shields.io/badge/tools-6-blue) ![tests](https://img.shields.io/badge/tests-57%20passing-brightgreen) ![network](https://img.shields.io/badge/network-none-informational) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
+
+```sh
+dsh plugin --profile web add dsh-win-native
+```
+
+装完**重启应用**（bundle 列表是启动时读的）。想一次装齐四个插件（含 [deterministic-tools](https://github.com/ax2/dsh-deterministic-tools) / [jvm-doctor](https://github.com/ax2/dsh-jvm-doctor) / [py-doctor](https://github.com/ax2/dsh-py-doctor)）用 [`dsh-zidev-toolbox`](https://github.com/ax2/dsh-zidev-toolbox)；**别和单独安装混用**。
+
+**15 秒看效果** —— 问"`C:\temp\CON.txt` 这个路径能用吗"，模型调用 `path_inspect`，拿回（实测输出）：
+
+```json
+{ "issues": [ { "code": "reserved_name", "severity": "error", "position": 8,
+                "detail": "segment \"CON.txt\" is a reserved DOS device name, even with an extension or a path prefix" } ],
+  "safe_for_max_path": false, "canonical_length": 15 }
+```
+
+**为什么不让模型自己写 pwsh？** 这些判断写成一行 PowerShell 都会漏东西，而工具是 57 个测试盯着的固定实现：
+- **编码**：GBK / GB18030 / Big5 / Shift_JIS 评分 + `high/medium/low` 置信度，并列出所有接近的备选；
+- **路径**：保留设备名、8.3 安全、UNC vs 驱动器相对、逐段长度、260 上限——每条 finding 带 code / severity / 位置；
+- **只读**：只有 `dir_usage` 与 `file_duplicates` 碰磁盘，都有预算，软链接与 junction 跳过并上报、从不跟随。
+
+相邻插件：[dsh-deterministic-tools](https://github.com/ax2/dsh-deterministic-tools) · [dsh-jvm-doctor](https://github.com/ax2/dsh-jvm-doctor) · [dsh-py-doctor](https://github.com/ax2/dsh-py-doctor) · [dsh-zidev-toolbox](https://github.com/ax2/dsh-zidev-toolbox)
+
+---
+
 ## 这个插件解决什么问题
 
 Windows 上的 agent 每天在做同一类事：猜一个字节流是什么编码、判断一个路径为什么会失败、把 `netstat` 的输出用正则抠出来、统计一个目录多大、找重复文件。这些事用临时 PowerShell 拼出来通常有三个毛病：
