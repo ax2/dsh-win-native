@@ -360,14 +360,28 @@ plugins:
 
 ## 安装与构建
 
+npm（已发布 `0.1.0`，推荐）：
+
+```sh
+dsh plugin --profile web add dsh-win-native
+```
+
+预构建 tarball（与 npm 上是同一份产物，适合离线或需要固定版本）：
+
+```sh
+dsh plugin --profile web add https://github.com/ax2/dsh-win-native/releases/download/v0.1.0/dsh-win-native-0.1.0.tgz
+```
+
+`dsh.bundle.patch` 指向 `./cordis.patch.yml`，它在配置里插入 `id: win-native`。**没有 `postinstall` / `prepare`**：发布的是预构建的 `lib/`（`lib/` 不进 git，由 `prepublishOnly` 在打包前重新构建），所以安装时不需要编译器。
+
+从源码构建与验证：
+
 ```powershell
 pnpm install
 pnpm typecheck
 node --test test/
 pnpm build
 ```
-
-`lib/` 是提交进仓库的预构建产物；`dsh.bundle.patch` 指向 `./cordis.patch.yml`，它在配置里插入 `id: win-native`。**没有 `postinstall` / `prepare`**。
 
 ## 开发说明
 
@@ -421,6 +435,18 @@ Six tools. Three of them (`path_inspect`, `netstat_parse`, `encoding_detect`) an
 2. **Nothing is assumed.** A budget that stopped the walk sets `truncated` and names the budget. A lossy conversion counts and names its casualties. A directory that could not be opened is a successful result carrying `ENOENT`, not an exception. Paths that cannot be read appear in `unreadable` with their stage and error code. Short CJK payloads are reported as `low` confidence with alternatives, because with real code-page tables a short GBK, Big5, and Shift-JIS payload are genuinely indistinguishable.
 
 ## Install
+
+```sh
+dsh plugin --profile web add dsh-win-native            # npm, published 0.1.0
+```
+
+Or pin the prebuilt tarball (the same artifact, for offline installs):
+
+```sh
+dsh plugin --profile web add https://github.com/ax2/dsh-win-native/releases/download/v0.1.0/dsh-win-native-0.1.0.tgz
+```
+
+To build and verify from source:
 
 ```powershell
 pnpm install
