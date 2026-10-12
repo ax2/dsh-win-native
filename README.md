@@ -360,7 +360,7 @@ plugins:
 
 ## 安装与构建
 
-npm（已发布 `0.1.0`，推荐）：
+npm（推荐）：
 
 ```sh
 dsh plugin --profile web add dsh-win-native
@@ -369,7 +369,7 @@ dsh plugin --profile web add dsh-win-native
 预构建 tarball（与 npm 上是同一份产物，适合离线或需要固定版本）：
 
 ```sh
-dsh plugin --profile web add https://github.com/ax2/dsh-win-native/releases/download/v0.1.0/dsh-win-native-0.1.0.tgz
+dsh plugin --profile web add https://github.com/ax2/dsh-win-native/releases/download/v0.1.1/dsh-win-native-0.1.1.tgz
 ```
 
 `dsh.bundle.patch` 指向 `./cordis.patch.yml`，它在配置里插入 `id: win-native`。**没有 `postinstall` / `prepare`**：发布的是预构建的 `lib/`（`lib/` 不进 git，由 `prepublishOnly` 在打包前重新构建），所以安装时不需要编译器。
@@ -437,13 +437,13 @@ Six tools. Three of them (`path_inspect`, `netstat_parse`, `encoding_detect`) an
 ## Install
 
 ```sh
-dsh plugin --profile web add dsh-win-native            # npm, published 0.1.0
+dsh plugin --profile web add dsh-win-native            # npm
 ```
 
 Or pin the prebuilt tarball (the same artifact, for offline installs):
 
 ```sh
-dsh plugin --profile web add https://github.com/ax2/dsh-win-native/releases/download/v0.1.0/dsh-win-native-0.1.0.tgz
+dsh plugin --profile web add https://github.com/ax2/dsh-win-native/releases/download/v0.1.1/dsh-win-native-0.1.1.tgz
 ```
 
 To build and verify from source:

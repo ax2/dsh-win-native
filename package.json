@@ -1,6 +1,6 @@
 {
   "name": "dsh-win-native",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Windows correctness layer for DeepSeek Harness: GBK/GB18030/UTF-16/Big5/Shift-JIS encoding detection and lossy-reporting conversion, Windows path legality, netstat interpretation, and bounded read-only disk inspection.",
   "type": "module",
   "main": "lib/index.js",
