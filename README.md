@@ -15,7 +15,9 @@
 dsh plugin --profile web add dsh-win-native
 ```
 
-装完**重启应用**（bundle 列表是启动时读的）。想一次装齐四个插件（含 [deterministic-tools](https://github.com/ax2/dsh-deterministic-tools) / [jvm-doctor](https://github.com/ax2/dsh-jvm-doctor) / [py-doctor](https://github.com/ax2/dsh-py-doctor)）用 [`dsh-zidev-toolbox`](https://github.com/ax2/dsh-zidev-toolbox)；**别和单独安装混用**。
+装完**重启应用**（bundle 列表是启动时读的）。想一次装齐四个插件（含 [deterministic-tools](https://github.com/ax2/dsh-deterministic-tools) / [jvm-doctor](https://github.com/ax2/dsh-jvm-doctor) / [py-doctor](https://github.com/ax2/dsh-py-doctor)）用 [`@ax2zicode/dsh-dev-toolbox`](https://github.com/ax2/dsh-dev-toolbox)；**别和单独安装混用**。
+
+**家族总览**：[zicode.com/software](https://zicode.com/software/) 是四个插件、合装包与桌面软件的统一入口。
 
 **15 秒看效果** —— 问"`C:\temp\CON.txt` 这个路径能用吗"，模型调用 `path_inspect`，拿回（实测输出）：
 
@@ -30,7 +32,7 @@ dsh plugin --profile web add dsh-win-native
 - **路径**：保留设备名、8.3 安全、UNC vs 驱动器相对、逐段长度、260 上限——每条 finding 带 code / severity / 位置；
 - **只读**：只有 `dir_usage` 与 `file_duplicates` 碰磁盘，都有预算，软链接与 junction 跳过并上报、从不跟随。
 
-相邻插件：[dsh-deterministic-tools](https://github.com/ax2/dsh-deterministic-tools) · [dsh-jvm-doctor](https://github.com/ax2/dsh-jvm-doctor) · [dsh-py-doctor](https://github.com/ax2/dsh-py-doctor) · [dsh-zidev-toolbox](https://github.com/ax2/dsh-zidev-toolbox)
+相邻插件：[dsh-deterministic-tools](https://github.com/ax2/dsh-deterministic-tools) · [dsh-jvm-doctor](https://github.com/ax2/dsh-jvm-doctor) · [dsh-py-doctor](https://github.com/ax2/dsh-py-doctor) · [dsh-dev-toolbox](https://github.com/ax2/dsh-dev-toolbox)
 
 ---
 
