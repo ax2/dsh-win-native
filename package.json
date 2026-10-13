@@ -1,6 +1,6 @@
 {
   "name": "dsh-win-native",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "DSH plugin: Windows correctness layer — GBK/GB18030/UTF-16/Big5/Shift-JIS encoding detection with confidence and lossy reporting, Windows path legality (reserved device names, 8.3, UNC, MAX_PATH), netstat interpretation and bounded read-only disk inspection.",
   "type": "module",
   "main": "lib/index.js",
